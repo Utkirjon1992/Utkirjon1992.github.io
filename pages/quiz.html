@@ -1,68 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Quiz</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/quiz.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- <link rel="stylesheet" href="../css/quiz.css" /> -->
+    <title>English Quiz</title>
+    <style>
+      .body-section {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .quiz-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+      .question {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+      }
+      .options {
+        list-style-type: none;
+        padding: 0;
+      }
+      .options li {
+        margin-bottom: 10px;
+      }
+      .options button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+      .options button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="cv.html">CV</a></li>
-                <li><a href="quiz.html">Quiz</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="quiz.html">Quiz</a></li>
+        </ul>
+      </nav>
     </header>
-    <main>
-        <section>
-            <h1>Simple Quiz</h1>
-            <form id="quiz-form">
-                <label for="question1">1. What is the capital of France?</label><br>
-                <input type="radio" id="paris" name="question1" value="Paris">
-                <label for="paris">Paris</label><br>
-                <input type="radio" id="london" name="question1" value="London">
-                <label for="london">London</label><br>
-                <input type="radio" id="berlin" name="question1" value="Berlin">
-                <label for="berlin">Berlin</label><br><br>
+<div class="body-section">
 
-                <label for="question2">2. What is 2 + 2?</label><br>
-                <input type="radio" id="3" name="question2" value="3">
-                <label for="3">3</label><br>
-                <input type="radio" id="4" name="question2" value="4">
-                <label for="4">4</label><br>
-                <input type="radio" id="5" name="question2" value="5">
-                <label for="5">5</label><br><br>
-
-                <button type="button" onclick="submitQuiz()">Submit</button>
-            </form>
-            <p id="quiz-result"></p>
-        </section>
-    </main>
+    <div class="quiz-container">
+      <div id="quiz">
+        <p class="question"></p>
+        <ul class="options"></ul>
+        <p class="result" style="display: none"></p>
+      </div>
+    </div>
 
     <script>
-        function submitQuiz() {
-            const answers = {
-                question1: "Paris",
-                question2: "4"
-            };
+      const quizData = [
+        {
+          question: "What is the plural form of 'cat'?",
+          options: ["cats", "cates", "caties", "catses"],
+          answer: "cats",
+        },
+        {
+          question: "Which one is a noun?",
+          options: ["run", "happy", "dog", "quickly"],
+          answer: "dog",
+        },
+        {
+          question: "What is the opposite of 'big'?",
+          options: ["small", "tall", "wide", "short"],
+          answer: "small",
+        },
+        {
+          question: "Which sentence is correct?",
+          options: [
+            "She like apples.",
+            "She likes apples.",
+            "She liked apples.",
+          ],
+          answer: "She likes apples.",
+        },
+        {
+          question: "What is the past tense of 'go'?",
+          options: ["gone", "goes", "went", "going"],
+          answer: "went",
+        },
+        {
+          question: "Choose the correct article: ___ apple.",
+          options: ["An", "A", "The", "None"],
+          answer: "An",
+        },
+        {
+          question: "Which one is an adjective?",
+          options: ["play", "red", "boy", "eat"],
+          answer: "red",
+        },
+        {
+          question: "Fill in the blank: I ___ a book yesterday.",
+          options: ["read", "reads", "reading", "readed"],
+          answer: "read",
+        },
+        {
+          question: "Choose the correct spelling:",
+          options: ["beautiful", "beautifull", "beautyfull", "beautifal"],
+          answer: "beautiful",
+        },
+        {
+          question: "What is the opposite of 'happy'?",
+          options: ["sad", "angry", "excited", "calm"],
+          answer: "sad",
+        },
+      ];
 
-            let score = 0;
-            const form = document.getElementById('quiz-form');
-            const result = document.getElementById('quiz-result');
+      let currentQuestionIndex = 0;
+      let score = 0;
 
-            for (let question in answers) {
-                const userAnswer = form.elements[question].value;
-                if (userAnswer === answers[question]) {
-                    score++;
-                }
-            }
+      const questionElement = document.querySelector(".question");
+      const optionsElement = document.querySelector(".options");
+      const resultElement = document.querySelector(".result");
 
-            result.textContent = `You scored ${score} out of ${Object.keys(answers).length}.`;
+      function loadQuestion() {
+        const currentQuestion = quizData[currentQuestionIndex];
+        questionElement.textContent = currentQuestion.question;
+        optionsElement.innerHTML = "";
+
+        currentQuestion.options.forEach((option) => {
+          const button = document.createElement("button");
+          button.textContent = option;
+          button.addEventListener("click", () => checkAnswer(option));
+          const li = document.createElement("li");
+          li.appendChild(button);
+          optionsElement.appendChild(li);
+        });
+      }
+
+      function checkAnswer(selectedOption) {
+        const correctAnswer = quizData[currentQuestionIndex].answer;
+        if (selectedOption === correctAnswer) {
+          score++;
         }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < quizData.length) {
+          loadQuestion();
+        } else {
+          displayResult();
+        }
+      }
+
+      function displayResult() {
+        questionElement.style.display = "none";
+        optionsElement.style.display = "none";
+        resultElement.style.display = "block";
+        resultElement.textContent = `You scored ${score} out of ${quizData.length}`;
+      }
+
+      loadQuestion();
     </script>
-</body>
+    </div>
+  </body>
 </html>
